@@ -23,7 +23,7 @@ def main():
         else:
             raise e
     subprocess.run('sed -i \'s/ZSH_THEME.*/ZSH_THEME="kphoen"/\' ~/.zshrc', shell=True, check=True)
-    subprocess.run('export SHELL=$(which zsh)', shell=True, check=True)
+    subprocess.run('chsh -s $(which zsh)', shell=True, check=True)
 
     # Setup tmux.
     tmux_conf_filepath = os.path.expanduser('~/.tmux.conf')

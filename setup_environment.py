@@ -54,6 +54,8 @@ def main():
             di = diff
             lo = log --color --graph --decorate -M --pretty=oneline --abbrev-commit -M
     """)
+    with open(git_config_filepath, 'w') as git_config_file:
+        git_config_file.write(git_config_content)
 
 
 if __name__ == "__main__":

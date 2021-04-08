@@ -11,13 +11,13 @@ def main():
     # Setup Zsh.
     try:
         subprocess.run(
-            'ZSH=$HOME/.oh-my-zsh RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
+            'yes | ZSH=$HOME/.oh-my-zsh RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
             shell=True, check=True)
     except subprocess.CalledProcessError as e:
         if e.returncode == 1:  # Zsh is already installed.
             subprocess.run('rm -r $HOME/.oh-my-zsh', shell=True, check=True)
             subprocess.run(
-                'ZSH=$HOME/.oh-my-zsh RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
+                'yes | ZSH=$HOME/.oh-my-zsh RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
                 shell=True, check=True)
             print('finish')
         else:

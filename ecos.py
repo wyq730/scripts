@@ -38,6 +38,7 @@ def main():
     password = args.password
     is_first = args.first
 
+    ssh_pass = 'sshpass -p {}'.format(password)
     ssh = 'ssh {}@{} -p {}'.format(user, host_ip, port)
 
     if is_first:
@@ -48,15 +49,23 @@ def main():
             StrictHostKeyChecking no
             ForwardAgent yes
         """.format(host_ip))
-
         prepend(os.path.expanduser('~/.ssh/config'), ssh_config_content)
-        subprocess.run(
-            'sshpass -p {} ssh-copy-id {}@{} -p {}'.format(password, user, host_ip, port),
-            shell=True, check=True)
+
+        res = subprocess.run(
+            '{} {} "test -e ~/.ready && echo \'yes\' || echo \'no\'"'.format(ssh_pass, ssh),
+            shell=True, capture_output=True, check=True)
 
         subprocess.run(
-            '{} \'python3 -c \"$(curl -L https://raw.githubusercontent.com/wyq730/scripts/main/setup_environment.py\?$(date +%s))\"\''.format(ssh),
+            '{} ssh-copy-id {}@{} -p {}'.format(ssh_pass, user, host_ip, port),
             shell=True, check=True)
+
+        if res.stdout == b'yes\n':
+            print('The container has already been set up. Login directly now.')
+        else:
+            subprocess.run(
+                '{} \'python3 -c \"$(curl -L https://raw.githubusercontent.com/wyq730/scripts/main/setup_environment.py\?$(date +%s))\"\''.format(ssh),
+                shell=True, check=True)
+            subprocess.run('{} {} "touch ~/.ready"'.format(ssh_pass, ssh), shell=True, check=True)
 
     subprocess.run(ssh, shell=True, check=True)
 

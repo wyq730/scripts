@@ -28,7 +28,6 @@ def main():
     # Setup tmux.
     tmux_conf_filepath = os.path.expanduser('~/.tmux.conf')
     tmux_conf_content = textwrap.dedent("""
-        set -g mouse on
         unbind C-b
         set-option -g prefix `
         bind ` send-prefix

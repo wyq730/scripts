@@ -48,16 +48,18 @@ def main():
         Host {}
             StrictHostKeyChecking no
             ForwardAgent yes
+            Port 9992
+            User root
         """.format(host_ip))
         prepend(os.path.expanduser('~/.ssh/config'), ssh_config_content)
 
         res = subprocess.run(
             '{} {} "test -e ~/.ready && echo \'yes\' || echo \'no\'"'.format(ssh_pass, ssh),
-            shell=True, capture_output=True, check=True)
+            shell=True, stdout=subprocess.PIPE, check=True)
 
-        subprocess.run(
-            '{} ssh-copy-id {}@{} -p {}'.format(ssh_pass, user, host_ip, port),
-            shell=True, check=True)
+        # subprocess.run(
+        #     '{} ssh-copy-id {}@{} -p {}'.format(ssh_pass, user, host_ip, port),
+        #     shell=True, check=True)
 
         if res.stdout == b'yes\n':
             print('The container has already been set up. Login directly now.')

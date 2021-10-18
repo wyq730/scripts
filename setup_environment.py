@@ -56,6 +56,12 @@ def main():
     with open(git_config_filepath, 'w') as git_config_file:
         git_config_file.write(git_config_content)
 
+    # Add tspkg entry to zshrc.
+    zshrc_tspkg_entry = textwrap.dedent('eval $(cd && .tspkg/bin/tsp --env)')
+    zshrc_path = os.path.expanduser('~/.zshrc')
+    with open(zshrc_path, 'a') as zshrc_config_file:
+        zshrc_config_file.write(zshrc_tspkg_entry)
+
 
 if __name__ == "__main__":
     main()
